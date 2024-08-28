@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Quest</title>
-    <script src="https://unpkg.com/htmx.org"></script>
-   <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
-<div id="quiz-area">
-    <div hx-get="/static/question-template.html" hx-target="#quiz-content" hx-trigger="load">
-        <div id="quiz-content">
-            Loading next question...
-        </div>
-    </div>
+    <head>
+        <title>Chat Room</title>
+        <script src="https://unpkg.com/htmx.org"></script>
+        <link rel="stylesheet" href="/static/css/styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <div id="chat"  hx-get="/messages" hx-trigger="load, every 2s" hx-swap="beforeend" hx-include="#lastMessageId">
 
-</div>
-</body>
+            </div>
+            <input type="hidden" id="lastMessageId" name="lastMessageId" value="0">
+            <div class="input-area">
+                <div class="message-container">
+                    <input type="text" id="content" name="content" placeholder="Your message" required />
+                <button hx-trigger="click" type="button" hx-post="/sendMessage" hx-include="#user,#content,#lastMessageId" hx-swap="none">Send</button>
+                </div>
+                <br />
+                <div class="user-container">
+                    <label id="username-area" for="user"></label>
+                    <input type="text" id="user" name="user" placeholder="Your name" required />
+                    <button hx-trigger="click" type="button" hx-get="/username" hx-target="#username-area" hx-swap="innerHTML" hx-include="#user">Your Name</button>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

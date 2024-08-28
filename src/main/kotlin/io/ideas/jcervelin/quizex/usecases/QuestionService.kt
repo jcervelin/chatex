@@ -1,11 +1,64 @@
 package io.ideas.jcervelin.quizex.usecases
 
-import io.ideas.jcervelin.quizex.configs.questionsMap
+import io.ideas.jcervelin.quizex.chatRoom
+import io.ideas.jcervelin.quizex.openAIClient
+import kotlinx.html.*
+import kotlinx.html.stream.appendHTML
+import java.io.StringWriter
 
-fun randomQuestion(): String {
-    return questionsMap.keys.random()
+fun sendMessage(user: String, content: String): String {
+
+    val alteredContent = openAIClient.getRudeResponse(content)
+    val message = chatRoom.addMessage(user, alteredContent)
+
+    val writer = StringWriter()
+    writer.appendHTML().p {
+        dataMsgId = message.id.toString()
+        strong {
+            +"$user: "
+        }
+        +content
+    }
+
+    writer.appendHTML().input {
+        type=InputType.text
+        id="content"
+        name="content"
+        placeholder="Your message"
+        value=""
+        required=true
+        attributes["hx-swap-oob"] = "true"
+    }
+
+    return writer.toString()
 }
 
-fun checkAnswer(question: String, answer: String): Boolean {
-    return questionsMap[question].equals(answer.uppercase())
+fun message(lastMessageId: Long): String {
+    val writer = StringWriter()
+    val newMessages = chatRoom.messages.dropWhile { it.id <= lastMessageId }
+
+    val maxId = newMessages.maxByOrNull { it.id }?.id ?: lastMessageId
+
+    newMessages.forEach {
+        writer.appendHTML().p {
+            dataMsgId = it.id.toString()
+            strong {
+                +"${it.user}: "
+            }
+            +it.content
+        }
+    }
+
+    writer.appendHTML().input {
+        type= InputType.hidden
+        id="lastMessageId"
+        name="lastMessageId"
+        value=(maxId).toString()
+        attributes["hx-swap-oob"] = "true"
+    }
+    return writer.toString()
+}
+
+fun username(user: String): String {
+    return user
 }

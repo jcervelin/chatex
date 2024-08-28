@@ -1,95 +1,109 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: #f4f7f6;
     margin: 0;
     padding: 0;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
-#quiz-area {
-    background-color: #ffffff;
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+    height: 80vh;
+    background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 400px;
-    padding: 20px;
-    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-label {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    display: block;
-}
-
-input[type="text"] {
-    width: calc(100% - 24px);
+#chat {
+    flex-grow: 1;
     padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
 }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 10px 0;
-    width: calc(100% - 24px);
+#chat p {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 5px 0;
 }
 
-button:hover {
-    background-color: #45a049;
-}
-
-button:active {
-    background-color: #3e8e41;
-}
-
-#next-question button {
-    background-color: #FFA500;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 12px 24px;
-    margin-top: 20px;
-    border-radius: 6px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-#next-question button:hover {
-    background-color: #FF8C00;
-}
-
-#next-question button:active {
-    background-color: #FF7F00;
-}
-
-#result {
-    font-size: 18px;
-    font-weight: bold;
-    margin-top: 20px;
+#chat p strong {
     color: #333;
 }
 
-@media (max-width: 600px) {
-    #quiz-area {
-        width: 100%;
-        padding: 15px;
-    }
+.input-area {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #ddd;
+}
 
-    button {
-        width: calc(100% - 20px);
-    }
+.message-container, .user-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.message-container {
+    justify-content: flex-start;
+    flex: 1;
+}
+
+.user-container {
+    justify-content: flex-end;
+    flex: 1;
+}
+
+.input-area input[type="text"], .input-area button {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.input-area input[type="text"] {
+    width: calc(100% - 120px);
+    margin-right: 10px;
+}
+
+.input-area button {
+    width: 100px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.input-area button:hover {
+    background-color: #45a049;
+}
+
+#username {
+    background-color: #f1f1f1;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    width: calc(100% - 120px);
+    margin-right: 10px;
+}
+
+#lastMessageId {
+    display: none;
+}
+
+.user-container label {
+    margin-bottom: 10px;
+    font-weight: bold;
 }
