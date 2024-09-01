@@ -72,6 +72,6 @@ jobs:
     - name: Render Deployment
       uses: sws2apps/render-deployment@v1.7.0
       with:
-        serviceId: srv-craa3m3tq21c73bv2sgg
-        apiKey: ${{secrets.ON_RENDER_KEY}}
+        serviceId: ${{ secrets.SERVICE_ID }}
+        apiKey: ${{ secrets.ON_RENDER_KEY }}
         multipleDeployment: false
