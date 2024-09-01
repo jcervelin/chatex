@@ -6,9 +6,14 @@ import kotlinx.html.*
 import kotlinx.html.stream.appendHTML
 import java.io.StringWriter
 
+val history: LinkedHashMap<String, String> = LRUCache(30)
+
 fun sendMessage(user: String, content: String): String {
 
     val alteredContent = openAIClient.getRudeResponse(content)
+
+    history.put("Original: '${content}'", "Transformed: '${alteredContent}'")
+
     val message = chatRoom.addMessage(user, alteredContent)
 
     val writer = StringWriter()
@@ -61,4 +66,12 @@ fun message(lastMessageId: Long): String {
 
 fun username(user: String): String {
     return user
+}
+
+fun chatHistory() {
+    history.entries.map { """
+        ${it.key}\n
+        ${it.value}
+        
+        """.trimIndent() }.joinToString { "\n\n" }
 }
