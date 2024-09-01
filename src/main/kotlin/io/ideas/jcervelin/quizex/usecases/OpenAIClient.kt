@@ -57,7 +57,7 @@ Transformed: 'Are you okay? You seem upset. Not that it’s any of my business, 
 
         val request = Request(POST, "https://api.openai.com/v1/chat/completions")
             .with(jsonLens of OpenAIChatRequest(
-                model = "gpt-4",
+                model = "gpt-3.5-turbo",
                 messages = messages,
                 temperature = 0.7,
                 max_tokens = 100,
