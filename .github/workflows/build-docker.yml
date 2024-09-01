@@ -69,16 +69,3 @@ jobs:
       uses: gradle/actions/dependency-submission@v4 # v4.0.0
       with:
         additional-arguments: "-Pdocker_username=${{ secrets.DOCKER_USERNAME }} -Pdocker_password=${{ secrets.DOCKER_PASSWORD }}"
-
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-    - name: Render Deployment
-      uses: sws2apps/render-deployment@v1.7.0
-      with:
-        serviceId: ${{ secrets.SERVICE_ID }}
-        apiKey: ${{ secrets.ON_RENDER_KEY }}
-        multipleDeployment: false
