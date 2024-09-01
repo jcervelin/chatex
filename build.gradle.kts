@@ -4,6 +4,7 @@ import org.owasp.dependencycheck.reporting.ReportGenerator.Format
 
 val docker_username: String by project
 val docker_password: String by project
+val docker_image_name: String by project
 
 plugins {
     id("org.owasp.dependencycheck") version "8.2.1"
@@ -28,7 +29,7 @@ jib {
             username = docker_username
             password = docker_password
         }
-        image = "julianocervelin/chatex"
+        image = docker_image_name
     }
     container {
         mainClass = "io.ideas.jcervelin.quizex.MainKt"
