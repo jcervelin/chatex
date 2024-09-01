@@ -2,6 +2,9 @@ import org.owasp.dependencycheck.gradle.extension.AnalyzerExtension
 import org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension
 import org.owasp.dependencycheck.reporting.ReportGenerator.Format
 
+val docker_username: String by project
+val docker_password: String by project
+
 plugins {
     id("org.owasp.dependencycheck") version "8.2.1"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.20"
@@ -17,8 +20,6 @@ repositories {
 }
 
 jib {
-    val docker_username: String by project
-    val docker_password: String by project
     from {
         image = "eclipse-temurin:17.0.12_7-jdk-focal"
     }
