@@ -75,7 +75,7 @@ jobs:
 
     steps:
     - name: Render Deployment
-    - uses: sws2apps/render-deployment@v1.7.0
+      uses: sws2apps/render-deployment@v1.7.0
       with:
         serviceId: ${{ secrets.SERVICE_ID }}
         apiKey: ${{ secrets.ON_RENDER_KEY }}
