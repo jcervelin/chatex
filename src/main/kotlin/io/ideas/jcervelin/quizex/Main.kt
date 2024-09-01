@@ -13,7 +13,10 @@ import org.http4k.routing.routes
 import org.http4k.routing.static
 import org.http4k.server.SunHttp
 import org.http4k.server.asServer
+import org.slf4j.LoggerFactory
 import java.io.InputStream
+
+private val logger = LoggerFactory.getLogger("main")
 
 val chatRoom = ChatRoom()
 val openAIClient = OpenAIClient(apiKey = System.getenv("OPEN_AI_KEY"))
@@ -48,6 +51,7 @@ fun loadStaticFile(fileName: String): InputStream {
 
 fun main() {
     app.asServer(SunHttp(8080)).start()
+    logger.info ("Server up in 8080")
 }
 
 
