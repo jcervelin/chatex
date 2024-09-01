@@ -68,11 +68,10 @@ jobs:
       with:
         additional-arguments: "-Pdocker_username=${{ secrets.DOCKER_USERNAME }} -Pdocker_password=${{ secrets.DOCKER_PASSWORD }}"
 
-#    - uses: mr-smithers-excellent/docker-build-push@v6
-#      name: Build & push Docker image
-#      with:
-#        image: julianocervelin/chatex
-#        tags: v1, latest
-#        registry: docker.io
-#        username: ${{ secrets.DOCKER_USERNAME }}
-#        password: ${{ secrets.DOCKER_PASSWORD }}
+  deploy:
+    - name: Render Deployment
+      uses: sws2apps/render-deployment@v1.7.0
+      with:
+        serviceId: srv-craa3m3tq21c73bv2sgg
+        apiKey: ${{secrets.ON_RENDER_KEY}}
+        multipleDeployment: false
