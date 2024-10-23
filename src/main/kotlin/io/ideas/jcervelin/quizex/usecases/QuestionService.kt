@@ -1,18 +1,17 @@
 package io.ideas.jcervelin.quizex.usecases
 
-import io.ideas.jcervelin.quizex.chatRoom
-import io.ideas.jcervelin.quizex.openAIClient
+import io.ideas.jcervelin.quizex.models.ChatRoom
+import io.ideas.jcervelin.quizex.models.History
 import kotlinx.html.*
 import kotlinx.html.stream.appendHTML
 import java.io.StringWriter
 
-val history: LinkedHashMap<String, String> = LRUCache(30)
 
-fun sendMessage(user: String, content: String): String {
+fun sendMessage(user: String, content: String, chatRoom: ChatRoom, openAIClient: AIClient, history: History): String {
 
     val alteredContent = openAIClient.getRudeResponse(content)
 
-    history.put("Original: '${content}'", "Transformed: '${alteredContent}'")
+    history.add(content = content, alteredContent = alteredContent)
 
     val message = chatRoom.addMessage(user, alteredContent)
 
@@ -38,9 +37,9 @@ fun sendMessage(user: String, content: String): String {
     return writer.toString()
 }
 
-fun message(lastMessageId: Long): String {
+fun message(lastMessageId: Long, chatRoom: ChatRoom): String {
     val writer = StringWriter()
-    val newMessages = chatRoom.messages.dropWhile { it.id <= lastMessageId }
+    val newMessages = chatRoom.messages().dropWhile { it.id <= lastMessageId }
 
     val maxId = newMessages.maxByOrNull { it.id }?.id ?: lastMessageId
 
@@ -68,10 +67,3 @@ fun username(user: String): String {
     return user
 }
 
-fun chatHistory() {
-    history.entries.map { """
-        ${it.key}\n
-        ${it.value}
-        
-        """.trimIndent() }.joinToString { "\n\n" }
-}

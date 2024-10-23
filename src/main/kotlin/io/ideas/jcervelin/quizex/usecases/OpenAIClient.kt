@@ -1,5 +1,6 @@
 package io.ideas.jcervelin.quizex.usecases;
 
+import io.ideas.jcervelin.quizex.models.History
 import org.http4k.client.OkHttp
 import org.http4k.core.*
 import org.http4k.core.Method.POST
@@ -19,13 +20,17 @@ data class OpenAIChatResponse(val choices: List<OpenAIChatChoice>)
 @Serializable
 data class OpenAIChatChoice(val message: OpenAIChatMessage)
 
-class OpenAIClient(private val apiKey: String) {
+interface AIClient {
+    fun getRudeResponse(userMessage: String): String
+}
+
+class OpenAIClient(private val apiKey: String, private val history: History) : AIClient {
     private val client = OkHttp()
 
     private val jsonLens: BiDiBodyLens<OpenAIChatRequest> = Body.auto<OpenAIChatRequest>().toLens()
     private val jsonResponseLens: BiDiBodyLens<OpenAIChatResponse> = Body.auto<OpenAIChatResponse>().toLens()
 
-    fun getRudeResponse(userMessage: String): String {
+    override fun getRudeResponse(userMessage: String): String {
 
         val messages = listOf(
             OpenAIChatMessage("system", """
@@ -68,7 +73,7 @@ class OpenAIClient(private val apiKey: String) {
     
     ---
     Here is a history of the last conversation with the user, where the user's input is the Original and the bot is Transformed:\n
-    ${chatHistory()}
+    ${history.chatHistory()}
     
     ---
     
