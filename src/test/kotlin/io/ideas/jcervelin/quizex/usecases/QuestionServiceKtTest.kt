@@ -18,7 +18,7 @@ class SendMessageRouteTest {
         val mockOpenAIClient = MockOpenAIClient()
         val history = History(LRUCache(30))
 
-        val sendMessageRequest = Request(Method.POST, "/sendMessage")
+        val sendMessageRequest = Request(Method.POST, "/sendMessages")
             .form("user", "testUser")
             .form("content", "Hello!")
 
