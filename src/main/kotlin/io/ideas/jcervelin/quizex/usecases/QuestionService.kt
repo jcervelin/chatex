@@ -7,7 +7,8 @@ import kotlinx.html.stream.appendHTML
 import java.io.StringWriter
 
 
-fun sendMessage(user: String, content: String, chatRoom: ChatRoom, openAIClient: AIClient, history: History): String {
+fun sendMessageService(user: String, content: String, chatRoom: ChatRoom,
+                       openAIClient: AIClient, history: History): String {
 
     val alteredContent = openAIClient.getRudeResponse(content)
 

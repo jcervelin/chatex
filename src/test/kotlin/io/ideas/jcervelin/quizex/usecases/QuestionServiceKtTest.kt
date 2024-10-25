@@ -22,8 +22,7 @@ class SendMessageRouteTest {
             .form("user", "testUser")
             .form("content", "Hello!")
 
-        val sendMessageHandler = sendMessage(mockChatRoom, mockOpenAIClient, history)
-        val sendMessageResponse: Response = sendMessageHandler(sendMessageRequest)
+        val sendMessageResponse: Response = sendMessageRoute(mockChatRoom, mockOpenAIClient, history)(sendMessageRequest)
 
         val expectedResponse = """
             <p data-MsgId="1"><strong>testUser: </strong>Hello!</p>
@@ -35,7 +34,11 @@ class SendMessageRouteTest {
         val requestMessage = Request(Method.GET, "/messages")
             .query("lastMessageId", "1")
 
-        val messagesHandler = messages(mockChatRoom)
+        val messagesHandler = { req: Request ->
+            val lastMessageId = req.query("lastMessageId")!!
+            val message = message(lastMessageId.toLong(), mockChatRoom)
+            Response(Status.OK).body(message)
+        }
         val messagesResponse = messagesHandler(requestMessage)
 
         val expectedMessage = """

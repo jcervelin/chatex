@@ -9,30 +9,32 @@ import org.http4k.routing.bind
 import org.http4k.routing.static
 import java.io.InputStream
 
-fun index() = "/" bind Method.GET to { _: Request ->
+
+val indexRoute = "/" bind Method.GET to { _: Request ->
     Response(Status.OK).body(loadStaticFile("index.html"))
 }
 
-fun username() = "/username" bind Method.GET to { req: Request ->
+val usernameRoute = "/username" bind Method.GET to { req: Request ->
     val user = req.query("user")!!
     Response(Status.OK).body(username(user))
 }
 
-fun sendMessage(chatRoom: ChatRoom, openAIClient: AIClient, history: History): HttpHandler = { req: Request ->
+fun sendMessageRoute(chatRoom: ChatRoom, openAIClient: AIClient, history: History) =
+    "/sendMessage" bind Method.POST to { req: Request ->
     val user = req.form("user")!!
     val content = req.form("content")!!
 
-    val sendMessage = sendMessage(user, content, chatRoom, openAIClient, history)
+    val sendMessage = sendMessageService(user, content, chatRoom, openAIClient, history)
     Response(Status.OK).body(sendMessage)
 }
 
-fun messages(chatRoom: ChatRoom): HttpHandler = { req: Request ->
+fun messagesRoute(chatRoom: ChatRoom) = "/messages" bind Method.GET to { req: Request ->
     val lastMessageId = req.query("lastMessageId")!!
     val message = message(lastMessageId.toLong(), chatRoom)
     Response(Status.OK).body(message)
 }
 
-fun static() = "/static" bind static(ResourceLoader.Classpath("static"))
+val staticRoute = "/static" bind static(ResourceLoader.Classpath("static"))
 
 fun loadStaticFile(fileName: String): InputStream {
     return ResourceLoader::class.java.classLoader.getResourceAsStream("static/$fileName") as InputStream
